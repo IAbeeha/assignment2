@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="button1">Read</button>
+    <button id="button2">Update</button>
+    <button id="button3">Delete</button>
+
+    <div id="result"></div>
+
+    <script>
+      document.getElementById("button1").addEventListener("click", Read);
+      document.getElementById("button2").addEventListener("click", Update);
+      document.getElementById("button3").addEventListener("click", Delete);
+
+      function Read() {
+        url = window.location.href;
+        const id = url.split("/")[4];
+        fetch(`http://127.0.0.1:8000/user/${id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("result").innerText = JSON.stringify(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      function Update() {
+        url = window.location.href;
+        const id = url.split("/")[4];
+        console.log(id, "id");
+        window.location.href = `http://127.0.0.1:8000/update/${id}`;
+      }
+
+      function Delete() {
+        url = window.location.href;
+        const id = url.split("/")[4];
+        fetch(`http://127.0.0.1:8000/delete/${id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            window.confirm(JSON.stringify(data.message));
+            window.location.href = `http://127.0.0.1:5500/client/register.html`;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
